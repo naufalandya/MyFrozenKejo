@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(100)
+  email String @db.VarChar(80)
+  password String @db.VarChar(100)
+  phone_number String? @db.VarChar(50)
+  role ROLE @default(USER)
+
+  transaksi Transaksi[]
+  pembayaran Pembayaran[]  
+}
+
+model Produk {
+  id Int @id @default(autoincrement())
+  nama String
+  merk String?
+  stok Int
+  harga Int
+  foto String
+  description String? @default("")
+
+  transaksi Transaksi[]
+}
+
+model Transaksi {
+  id Int @id @default(autoincrement())
+
+  quantity Int?
+
+  produk_id Int?
+  produk Produk? @relation(fields: [produk_id], references: [id], onDelete: SetNull)
+
+  user_id Int? 
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  pembayaran_id Int? @unique
+  pembayaran Pembayaran? @relation(fields: [pembayaran_id], references: [id], onDelete: SetNull)
+}
+
+model Pembayaran {
+  id Int @id @default(autoincrement())
+  status Boolean
+  total_harga Int
+  
+  user_id Int?
+  user User? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  midtrans_order_id String? @unique
+  payment_link String?
+
+  created_at     DateTime @default(now())
+
+  midtrans Midtrans?
+  transaksi Transaksi?
+}
+
+model Midtrans {
+  id             Int      @id @default(autoincrement())
+  pembayaran_id Int?      @unique
+  payment_type   String
+  payment_status String
+  created_at     DateTime
+
+  pembayaran Pembayaran? @relation(fields: [pembayaran_id], references: [id], onDelete: SetNull)
+
+  @@map("payments")
+}
+
+enum ROLE {
+  USER
+  ADMIN
+}
+

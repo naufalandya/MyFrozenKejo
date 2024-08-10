@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="/styles/home.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('partials/_navbar') %>
+    <div class="content">
+        <!-- Newest Product Section -->
+        <h1 class="title-product-container">Newest Product</h1>
+        <hr class="border-section">
+        <div class="product-grid">
+            <% products.forEach(product => { %>
+                <a href="/product-detail?id=<%= product.id %>" class="product-link">
+                    <div class="product-card">
+                        <figure class="product-image-container">
+                            <img src="<%= product.foto %>" alt="<%= product.nama %>" class="product-image">
+                        </figure>
+                        <div class="product-details">
+                            <figcaption class="product-caption"><%= product.nama %></figcaption>
+                            <p><strong>Brand:</strong> <%= product.merk %></p>
+                            <p><strong>Stock:</strong> <%= product.stok %></p>
+                            <p><strong>Price:</strong> <%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.harga) %></p>
+                        </div>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+        
+        <div class="pagination">
+            <span>Page <%= currentPage %> of <%= totalPages %></span>
+            <div>
+                <% if (currentPage > 1) { %>
+                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/_footer') %>
+</body>
+</html>

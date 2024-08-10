@@ -1,0 +1,65 @@
+<nav class="navbar">
+    <div class="logo">
+        <a class="logo-title" href="/">FrozenKejo</a>
+    </div>
+    <div id="nav-links">
+        <a href="/">Home</a>
+        <!-- <a href="/about">About</a>
+        <a href="/contact">Contact</a> -->
+    </div>
+</nav>
+
+<style>
+    * {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    }
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #2d3748;
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 0.825rem;
+    }
+    .navbar a:hover {
+        text-decoration: underline;
+    }
+    .logo-title {
+        font-weight: 600;
+        margin: 0 !important;
+        font-size: 1.425rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.getElementById('nav-links');
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            navLinks.innerHTML += '<a href="/cart">Cart</a>';
+            navLinks.innerHTML += '<a href="/profile">Profile</a>';
+            navLinks.innerHTML += '<a id="logout" href="/login">Logout</a>';
+        } else {
+            navLinks.innerHTML += '<a href="/login">Login</a>';
+        }
+
+        const logoutLink = document.getElementById('logout');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', (event) => {
+                event.preventDefault(); 
+                localStorage.removeItem('token');
+                window.location.href = '/login'; 
+            });
+        }
+    });
+</script>

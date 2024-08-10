@@ -1,0 +1,59 @@
+/* product-not-found.css */
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #1a202c; 
+    color: white; 
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.content {
+    padding: 2rem;
+    max-width: 800px; 
+    margin: 0 auto; 
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 90vh; 
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #f7fafc; 
+}
+
+p {
+    margin-bottom: 1rem;
+    font-size: 1rem; 
+}
+
+a {
+    color: #3182ce;
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline; 
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

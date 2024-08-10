@@ -1,0 +1,120 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+body {
+    background-color: #1a202c; 
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto; 
+    min-height: 100vh; 
+}
+
+.title-product-detail {
+    font-size: 2rem; 
+    margin-bottom: 1rem;
+    color: #f7fafc; 
+}
+
+.border-section {
+    margin: 1.5rem 0;
+    border: 0; 
+    border-top: 2px solid #2d3748;
+}
+
+.product-detail-container {
+    display: flex;
+    gap: 1.5rem; 
+}
+
+.product-image-container {
+    flex: 1; 
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.product-details {
+    flex: 2;
+    background: #2d3748;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-rows: 80% 20%;   
+}
+
+.cart-container {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   justify-content: flex-end;
+}
+
+.product-details p {
+    margin: 0.5rem 0; 
+}
+
+.product-details strong {
+    color: #3182ce;
+}
+
+form {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 1rem; /* Space between input and button */
+}
+
+input[type="number"] {
+    padding: 0.5rem;
+    border: 1px solid #2d3748;
+    border-radius: 5px;
+    background-color: #1a202c;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+input[type="number"]::placeholder {
+    color: #4a5568; 
+}
+
+.add-to-cart {
+    background-color: #3182ce; 
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.add-to-cart:hover {
+    background-color: #2b6cb0; /* Darker blue on hover */
+}
+
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+}

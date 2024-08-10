@@ -1,0 +1,72 @@
+body {
+    background-color: #1a202c;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    padding: 2rem;
+    height: 100%;
+}
+
+.transaction-grid {
+    margin-top: 1.725rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust column count based on available width */
+    gap: 1.725rem;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.transaction-card {
+    background: #2d3748;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 100%; /* Ensure card takes full width of grid cell */
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transaction-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.transaction-details li {
+    margin-bottom: 1rem;
+}
+
+.transaction-details li p {
+    margin-bottom: 1rem;
+}
+
+.product-image {
+    width: 100%; 
+    height: auto;
+    object-fit: cover;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+}
+
+.pay-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    background: #2f918c;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.pay-button:hover {
+    background: #287a79;
+}

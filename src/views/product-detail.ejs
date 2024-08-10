@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link href="/styles/productdetail.css" rel="stylesheet">
+    <!-- Optional: Include jQuery for easier AJAX handling -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* CSS for loading spinner */
+        .loading-spinner {
+            display: none; /* Initially hidden */
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/_navbar') %>
+    <div class="content">
+        <!-- Product Detail Section -->
+        <h1 class="title-product-detail"><%= product.nama %></h1>
+        <hr class="border-section">
+        <div class="product-detail-container">
+            <figure class="product-image-container">
+                <img src="<%= product.foto %>" alt="<%= product.nama %>" class="product-image">
+            </figure>
+            <div class="product-details">
+                <div>
+                    <p><strong>Brand:</strong> <%= product.merk %></p>
+                    <p><strong>Stock:</strong> <%= product.stok %></p>
+                    <p><strong>Price:</strong> <%= new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(product.harga) %></p>
+                    <p><strong>Description:</strong> <%= product.deskripsi %></p>
+                </div>
+                <div class="cart-container">
+                    <form id="add-to-cart-form">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" max="<%= product.stok %>" value="1" required>
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <button type="submit" class="add-to-cart">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading-spinner" id="loading-spinner"></div>
+    <%- include('partials/_footer') %>
+
+    <script>
+        document.getElementById('add-to-cart-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const token = localStorage.getItem('token'); // Assumes token is stored in local storage
+
+            if(!token) {
+                alert('Please login first!.');
+                window.location.href = `/login`;
+            }
+
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const productId = parseInt(document.querySelector('input[name="productId"]').value);
+
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.style.display = 'block'; // Show loading spinner
+
+            try {
+                const response = await fetch('/api/v1/transaction/add-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: quantity
+                    })
+                });
+
+                const result = await response.json();
+
+                console.log(result)
+
+                if (response.ok) {
+                    // Handle successful addition to cart
+                    alert('Product added to cart successfully!');
+                    // Optionally, redirect or update UI
+                    window.location.href = `/cart`;
+
+                    // window.location.href = `${result.data.redirect_url}`;
+                } else {
+                    // Handle errors
+                    alert(result.error || 'Failed to add product to cart.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while adding product to cart.');
+            } finally {
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+            }
+        });
+    </script>
+</body>
+</html>
