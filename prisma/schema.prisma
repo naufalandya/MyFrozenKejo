@@ -27,7 +27,7 @@ model Produk {
   stok Int
   harga Int
   foto String
-  description String? @default("")
+  deskripsi String? @default("")
 
   transaksi Transaksi[]
 }

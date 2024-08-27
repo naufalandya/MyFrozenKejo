@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Edit Produk</title>
+    <style>
+        /* Your existing CSS styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #1a202c;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-content {
+            margin: 2rem auto;
+            padding: 2rem;
+            width: 50%;
+            background-color: #2d3748;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: white;
+            font-size: 1.425rem;
+            margin-bottom: 1.225rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="number"], input[type="file"] {
+            margin-bottom: 1.25rem;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #3b4352;
+            color: white;
+        }
+
+        button[type="submit"] {
+            background-color: #2767a3;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #3888df;
+        }
+
+        .back-button {
+            margin-top: 1rem;
+            background-color: #718096;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #a0aec0;
+        }
+
+    </style>
+</head>
+<body>
+    <%- include('partials/_navbar_admin') %>
+
+    <div class="container-content" style="margin-top: 50px;">
+        <h1>Edit Produk</h1>
+        <form id="edit-produk-form" enctype="multipart/form-data">
+            <label for="nama">Nama Produk:</label>
+            <input type="text" id="nama" name="nama" value="<%= produk.nama %>">
+
+            <label for="merk">Merk Produk:</label>
+            <input type="text" id="merk" name="merk" value="<%= produk.merk %>">
+
+            <label for="stok">Stok Produk:</label>
+            <input type="number" id="stok" name="stok" value="<%= produk.stok %>">
+
+            <label for="harga">Harga Produk:</label>
+            <input type="number" id="harga" name="harga" value="<%= produk.harga %>">
+
+            <label for="foto">Foto Produk (Optional):</label>
+            <img style="margin-bottom: 1rem; margin-top: 0.8rem;" src="<%= produk.foto %>" alt="">
+            <input type="file" id="foto" name="foto" accept="image/*">
+
+            <label for="deskripsi">Deskripsi:</label>
+            <input type="text" id="deskripsi" name="deskripsi" value="<%= produk.description %>">
+
+            <button type="submit">Update Produk</button>
+        </form>
+        <a href="/dashboard/admin"><button class="back-button">Kembali</button></a>
+    </div>
+
+    <script>
+        document.getElementById('edit-produk-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const produkId = "<%= produk.id %>"; // Ambil ID produk dari data yang sudah ada
+
+            try {
+                const response = await fetch(`http://localhost:3556/api/v1/dashboard/admin/update/${produkId}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Produk berhasil diupdate!');
+                } else {
+                    alert('Terjadi kesalahan: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim data');
+            }
+        });
+    </script>
+</body>
+</html>

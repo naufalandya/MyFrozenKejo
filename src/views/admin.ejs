@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Data Produk</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #1a202c;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-content {
+            margin: 2rem auto;
+            padding: 2rem;
+            width: 80%;
+            background-color: #2d3748;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: white;
+            font-size: 1.425rem;
+            margin-bottom: 1.225rem;
+        }
+
+        .add-button {
+            background-color: #2767a3;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background-color: #3888df;
+        }
+
+        .product-list-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .product-list-table th, .product-list-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .product-list-table th {
+            background-color: #2d3748;
+            color: white;
+        }
+
+        .product-list-table td {
+            color: white;
+        }
+
+        .edit-button, .remove-button {
+            background-color: #2d3748;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+
+        .edit-button {
+            background-color: #3b4352;
+        }
+
+        .edit-button:hover {
+            background-color: #4a5568;
+        }
+
+        .remove-button {
+            background-color: #c93939;
+        }
+
+        .remove-button:hover {
+            background-color: #e53e3e;
+        }
+
+        img {
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+    <%- include('partials/_navbar_admin') %>
+
+    <div class="container-content" style="margin-top: 50px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <h1>Data Produk List</h1>
+            <a href="/dashboard/admin/tambah-produk"><button class="add-button">Tambah</button></a>
+        </div>
+        <table class="product-list-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Gambar</th>
+                    <th>Nama</th>
+                    <th>Merk</th>
+                    <th>Stok</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((produk, index) => { %>
+                <tr>
+                    <td><%= index + 1 %></td>
+                    <td><img src="<%= produk.foto %>" alt="Gambar Produk" width="50"></td>
+                    <td><%= produk.nama %></td>
+                    <td><%= produk.merk || '-' %></td>
+                    <td><%= produk.stok %></td>
+                    <td>Rp <%= produk.harga %></td>
+                    <td>
+                        <a href="/dashboard/admin/edit-produk/<%= produk.id %>"><button class="edit-button">Edit</button></a>
+                        <button class="remove-button" data-id="<%= produk.id %>">Delete</button>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('click', async function(event) {
+            if (event.target.classList.contains('remove-button')) {
+                const id = event.target.getAttribute('data-id');
+
+                if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                    try {
+                        const response = await fetch(`http://localhost:3556/api/v1/dashboard/admin/delete/${id}`, {
+                            method: 'DELETE'
+                        });
+
+                        const result = await response.json();
+
+                        if (result.status) {
+                            alert(result.message);
+                            window.location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan, coba lagi nanti.');
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
